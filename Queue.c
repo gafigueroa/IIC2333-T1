@@ -9,6 +9,7 @@
 #include "Queue.h"
 #include <stdlib.h>
 
+//Different ways that the elements in the queue are going to be organized
 void organize_fcfs(Queue*);
 void organize_roundrobin(Queue*);
 void organize_priority(Queue*);
@@ -26,4 +27,37 @@ Queue* init_queue(int type){
         queue -> organize = organize_priority;
     }
     return queue;
+}
+
+void enqueue(Queue* queue, Process* process){
+    /*
+     Agregar un elemento en la queue, es necesario volver a ordenarla despues de agregar el elemento
+     */
+}
+
+Process* dequeue(Queue* queue){
+    /*
+     Obtener un elemento de la queue, es necesario volver a ordenarla despues de sacar el elemento
+     */
+    return NULL;
+}
+
+void organize_fcfs(Queue* queue){
+    /*
+     Este scheduler elige cada proceso en el orden en que entraron a la cola, sin importar la
+     prioridad asociada a cada uno.
+     */
+}
+
+void organize_roundrobin(Queue* queue){
+    /*
+     Este scheduler asigna un quantum Qk a un proceso con identificador k en función de su prioridad Pk.
+     */
+}
+
+void organize_priority(Queue* queue){
+    /*
+     Este scheduler ordena los procesos por orden de prioridad. En caso de que dos o más procesos tengan igual prioridad,
+     éstos se atienden según FCFS.
+     */
 }

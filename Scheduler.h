@@ -30,8 +30,11 @@ typedef struct Scheduler Scheduler;
  * 0: is for FCFS
  * 1: is for ROUNDROBIN
  * 2: is for PRIORITY
+ *
+ * @return The scheduler that has been initalized
  */
 Scheduler* init_scheduler(int type);
 
+void schedule(Scheduler* scheduler, Process* process);
 
 #endif /* Scheduler_h */

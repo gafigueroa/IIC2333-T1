@@ -36,6 +36,9 @@ typedef struct node_queue node_queue;
 
 /**
  * @brief Declarations of the queue
+ *
+ * This struct defines how the queue works, 
+ * the method organize will depend of the type of the queue
  */
 struct Queue {
     node_queue* head;
@@ -50,8 +53,27 @@ typedef struct Queue Queue;
  * 0: is for FCFS
  * 1: is for ROUNDROBIN
  * 2: is for PRIORITY
+ *
+ * @return The queue that has been initialized
  */
 Queue* init_queue(int type);
+
+/**
+ * @brief Push an element to the queue
+ *
+ * @param queue The queue where the element is going to be added
+ * @param process The process that's going to be added to the queue
+ */
+void enqueue(Queue* queue, Process* process);
+
+/**
+ * @brief Gets the next element from the queue
+ *
+ * @param queue The queue from where we are going to get the element
+ *
+ * @return The next process from the queue
+ */
+Process* dequeue(Queue* queue);
 
 
 
