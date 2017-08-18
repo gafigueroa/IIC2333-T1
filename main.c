@@ -7,9 +7,14 @@
 //
 
 #include <stdio.h>
+#include <signal.h>
+
+void handler(int code){
+    
+}
 
 int main(int argc, const char * argv[]) {
-    
+    signal(SIGTSTP, handler);
     
     return 0;
 }

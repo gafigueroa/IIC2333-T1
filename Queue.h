@@ -24,7 +24,7 @@ struct node_queue {
     /**
      * The process stored in the node of the queue
      */
-    Process process;
+    Process* process;
     
     /**
      * The next node
@@ -74,6 +74,13 @@ void enqueue(Queue* queue, Process* process);
  * @return The next process from the queue
  */
 Process* dequeue(Queue* queue);
+
+/**
+ * @brief Free the memory allocated by the queue
+ *
+ * @param queue The queue that's going to be freed
+ */
+void free_queue(Queue* queue);
 
 
 

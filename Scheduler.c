@@ -30,3 +30,8 @@ Scheduler* init_scheduling(int type){
     
     return scheduler;
 }
+
+void free_schedule(Scheduler* scheduler){
+    free(scheduler -> queue);
+    free(scheduler);
+}

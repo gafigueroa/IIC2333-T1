@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include "Queue.h"
 
-#define QUANTUM 5
+#define QUANTUM 3
 
 /**
  * @brief Declarations of the scheduler
@@ -35,6 +35,15 @@ typedef struct Scheduler Scheduler;
  */
 Scheduler* init_scheduler(int type);
 
+/**
+ * @brief Schedule a process to be done
+ *
+ * @param scheduler The scheduler that's going to be used
+ * @param process The process that's going to be scheduled
+ *
+ */
 void schedule(Scheduler* scheduler, Process* process);
+
+void free_schedule(Scheduler* scheduler);
 
 #endif /* Scheduler_h */

@@ -7,4 +7,9 @@
 //
 
 #include "Process.h"
+#include <stdlib.h>
 
+
+void free_process(Process* process){
+    free(process);
+}

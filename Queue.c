@@ -29,6 +29,16 @@ Queue* init_queue(int type){
     return queue;
 }
 
+/**
+ * @brief Initialize a new node with the process
+ */
+node_queue* init_node_queue(Process* process){
+    node_queue* node = malloc(sizeof(node_queue));
+    node -> process = process;
+    node -> next = NULL;
+    return node;
+}
+
 void enqueue(Queue* queue, Process* process){
     /*
      Agregar un elemento en la queue, es necesario volver a ordenarla despues de agregar el elemento
@@ -61,3 +71,20 @@ void organize_priority(Queue* queue){
      éstos se atienden según FCFS.
      */
 }
+
+void free_queue(Queue* queue){
+    node_queue* node = queue -> head;
+    node_queue* temp_node;
+    while (node != NULL){
+        free_process(node->process);
+        temp_node = node;
+        node = node -> next;
+        free(temp_node);
+    }
+    free(queue);
+}
+
+
+
+
+
