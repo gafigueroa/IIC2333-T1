@@ -24,8 +24,21 @@ struct Process {
      */
     char name[NAME_SIZE];
     
+    /**
+     * Amount of times that are going to be processed
+     */
+    int size_times;
     
-    //Manage times
+    /**
+     * Array of ints representing the times that the process is going to be processing
+     */
+    int* times;
+    
+    /**
+     * Position of the array representing the actual time
+     */
+    int actual_time;
+    
     
     /**
      * The priority, takes values between 0 to 63, but mapped from 1 to 64
