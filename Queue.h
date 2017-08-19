@@ -82,6 +82,12 @@ Process* dequeue(Queue* queue);
  */
 void free_queue(Queue* queue);
 
+/**
+ * @brief Change the value of the quantum for round robin
+ *
+ * @param quantum The new value of the quantum
+ */
+void change_quantum(int new_quantum);
 
 
 #endif /* Queue_h */

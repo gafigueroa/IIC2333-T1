@@ -14,6 +14,8 @@ void organize_fcfs(Queue*);
 void organize_roundrobin(Queue*);
 void organize_priority(Queue*);
 
+int quantum = 3;
+
 Queue* init_queue(int type){
     Queue* queue = malloc(sizeof(Queue));
     queue -> head = NULL;
@@ -84,6 +86,9 @@ void free_queue(Queue* queue){
     free(queue);
 }
 
+void change_quantum(int new_quantum){
+    quantum = new_quantum;
+}
 
 
 

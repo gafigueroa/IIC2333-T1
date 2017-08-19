@@ -10,28 +10,16 @@
 #include <stdlib.h>
 
 
-Process scheduling_fcfs(Queue* queue);
-Process scheduling_roundrobin(Queue* queue);
-Process scheduling_priority(Queue* queue);
-
 Scheduler* init_scheduling(int type){
     Scheduler* scheduler = malloc(sizeof(Scheduler));
-    scheduler -> queue = init_queue(type);
-    
-    if (type == FCFS){
-        scheduler -> scheduling = scheduling_fcfs;
-    }
-    else if (type == ROUNDROBIN){
-        scheduler -> scheduling = scheduling_roundrobin;
-    }
-    else if (type == PRIORITY){
-        scheduler -> scheduling = scheduling_priority;
-    }
+    scheduler -> ready_queue = init_queue(type);
+    scheduler -> waiting_queue = init_queue(FCFS);
     
     return scheduler;
 }
 
 void free_schedule(Scheduler* scheduler){
-    free(scheduler -> queue);
+    free(scheduler -> ready_queue);
+    free(scheduler -> waiting_queue);
     free(scheduler);
 }

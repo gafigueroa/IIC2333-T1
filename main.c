@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include "Scheduler.h"
 
 void handler(int code){
     
@@ -15,6 +16,6 @@ void handler(int code){
 
 int main(int argc, const char * argv[]) {
     signal(SIGTSTP, handler);
-    
+
     return 0;
 }

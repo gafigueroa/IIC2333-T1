@@ -24,15 +24,8 @@ struct Process {
      */
     char name[NAME_SIZE];
     
-    /**
-     * Amount of time that the process it's going to be executing
-     */
-    int time_executing;
     
-    /**
-     * Amount of time that the process it's going to be blocked
-     */
-    int time_blocked;
+    //Manage times
     
     /**
      * The priority, takes values between 0 to 63, but mapped from 1 to 64
@@ -57,13 +50,11 @@ typedef struct Process Process;
  *
  * @param pid The id of the process
  * @param name The name of the process
- * @param time_executing Amount of time that the process it's going to be executing
- * @param time_blocked Amount of time that the process it's going to be blocked
  * @param priority The priority, takes values between 0 to 63, but mapped from 1 to 64
  *
  * @return The queue that has been initialized
  */
-Process* init_process(int pid, char* name, int time_executing, int time_blocked, int priority);
+Process* init_process(int pid, char* name, int times_size, int* times, int priority);
 
 /**
  * @brief Free the memory allocated by the process

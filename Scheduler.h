@@ -12,14 +12,12 @@
 #include <stdio.h>
 #include "Queue.h"
 
-#define QUANTUM 3
-
 /**
  * @brief Declarations of the scheduler
  */
 struct Scheduler {
-    Queue* queue;
-    Process (*scheduling)(Queue*);
+    Queue* ready_queue;
+    Queue* waiting_queue;
 };
 typedef struct Scheduler Scheduler;
 
@@ -44,6 +42,18 @@ Scheduler* init_scheduler(int type);
  */
 void schedule(Scheduler* scheduler, Process* process);
 
+/**
+ * @brief Simulate one unit of time
+ *
+ */
+void tick(Scheduler* scheduler);
+
+/**
+ * @brief Free the memory allocated by the scheduler
+ *
+ * @param scheduler The scheduler that's going to be freed
+ *
+ */
 void free_schedule(Scheduler* scheduler);
 
 #endif /* Scheduler_h */
