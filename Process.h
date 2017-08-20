@@ -13,6 +13,10 @@
 
 #define NAME_SIZE 256
 
+#define WAITING 1
+#define RUNNING 2
+#define READY 3
+
 struct Process {
     /**
      * The id of the process
@@ -39,6 +43,11 @@ struct Process {
      */
     int actual_time;
     
+    /**
+     * When the process is going to start
+     */
+    int initial_time;
+    
     
     /**
      * The priority, takes values between 0 to 63, but mapped from 1 to 64
@@ -61,13 +70,12 @@ typedef struct Process Process;
 /**
  * @brief Initialize a new process
  *
- * @param pid The id of the process
  * @param name The name of the process
  * @param priority The priority, takes values between 0 to 63, but mapped from 1 to 64
  *
  * @return The queue that has been initialized
  */
-Process* init_process(int pid, char* name, int times_size, int* times, int priority);
+Process* init_process(char name[], int priority, int initial_time, int times_size, int* times);
 
 /**
  * @brief Free the memory allocated by the process
@@ -75,5 +83,7 @@ Process* init_process(int pid, char* name, int times_size, int* times, int prior
  * @param process The process that's going to be freed
  */
 void free_process(Process* process);
+
+void print_process(Process* process);
 
 #endif /* Process_h */
