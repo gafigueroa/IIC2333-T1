@@ -25,30 +25,35 @@ struct node_queue {
      * The process stored in the node of the queue
      */
     Process* process;
-    
+
     /**
      * The next node
      */
-    struct node_queue* next;
-    
+    //struct node_queue* next;
+
 };
 typedef struct node_queue node_queue;
 
 /**
  * @brief Declarations of the queue
  *
- * This struct defines how the queue works, 
+ * This struct defines how the queue works,
  * the method organize will depend of the type of the queue
  */
 struct Queue {
-    node_queue* head;
+    //node_queue* head;
+    node_queue** node_array;
     void (*organize)(struct Queue*);
+    /*
+    * Amount of elements in the heap
+    */
+    int size;
 };
 typedef struct Queue Queue;
 
 /**
  * @brief Initialize the queue with the type
- * 
+ *
  * @param type The type of the queue:
  * 0: is for FCFS
  * 1: is for ROUNDROBIN
