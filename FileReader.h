@@ -12,6 +12,19 @@
 #include "Process.h"
 #include <stdio.h>
 
-Process** read_file(char* filename, int* process_amount);
+/** @defgroup reader File Reader
+ *  Reads the file
+ */
+
+/**
+ * @ingroup reader
+ * @brief Read a file containing a list of processes.
+ *
+ * @param filename The name of the file that's going to be opened
+ * @param process_amount Returns in this variable the amount of processes found
+ *
+ * @return Returns the array of processes
+ */
+Process** read_file(const char* filename, int* process_amount);
 
 #endif /* FileReader_h */

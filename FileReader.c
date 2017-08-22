@@ -19,22 +19,29 @@
 #define TIMES_SIZE 3
 #define TIMES 4
 
-Process* process_from_line(char* line){
-    int i;
-    char empty_char = '\0';
+/**
+ * @brief Reads the file until it finds all the information of a process, then returns that process
+ */
+Process* find_next_process(FILE* file){
+    char ch = fgetc(file);
+    if (ch == EOF || ch == '\0'){
+        return NULL;
+    }
+    int i = 0;
     
     char pname[NAME_SIZE] = "";
     int ppriority = 0;
     int pinitial_time = 0;
     int ptimes_size = 0;
     
+    
     int temp_time = 0;
     int* ptimes = NULL;
     
     int actual = 0;
     
-    for (i = 0; i < LINE_SIZE && line[i] != empty_char && line[i] != '\n'; i++){
-        if (line[i] == ' '){
+    while (ch != '\n' && ch != '\0' && ch != EOF){
+        if (ch == ' '){
             actual++;
             if (actual == TIMES){
                 ptimes_size = 2*ptimes_size - 1;
@@ -49,26 +56,29 @@ Process* process_from_line(char* line){
         else {
             switch (actual) {
                 case NAME:
-                    pname[i] = line[i];
+                    pname[i] = ch;
+                    i++;
                     break;
                     
                 case PRIORITY:
-                    ppriority = 10*ppriority + line[i] - '0';
+                    ppriority = 10*ppriority + ch - '0';
                     break;
                     
                 case INITIAL_TIME:
-                    pinitial_time = 10*pinitial_time + line[i] - '0';
+                    pinitial_time = 10*pinitial_time + ch - '0';
                     break;
                     
                 case TIMES_SIZE:
-                    ptimes_size = 10*ptimes_size + line[i] - '0';
+                    ptimes_size = 10*ptimes_size + ch - '0';
                     break;
-
+                    
                 default:
-                    temp_time = 10*temp_time + line[i] - '0';
+                    temp_time = 10*temp_time + ch - '0';
                     break;
             }
         }
+        
+        ch = fgetc(file);
     }
     int pos = actual - TIMES;
     ptimes[pos] = temp_time;
@@ -78,7 +88,10 @@ Process* process_from_line(char* line){
     return process;
 }
 
-int amount_lines_file(char* filename){
+/**
+ * @brief Returns the amount of lines that the file contain
+ */
+int amount_lines_file(const char* filename){
     int amount_lines = 1;
     FILE* file = fopen(filename, "r");
     int ch = 0;
@@ -99,25 +112,24 @@ int amount_lines_file(char* filename){
     return amount_lines;
 }
 
-Process** read_file(char* filename, int* process_amount){
+Process** read_file(const char* filename, int* process_amount){
     int amount_process = amount_lines_file(filename);
     
     *process_amount = amount_process;
 
     Process** process_array = calloc(sizeof(Process*),amount_process);
     int i = 0;
-    
     FILE* file = fopen(filename, "r");
     if (file == NULL){
-        
+        printf("File not found\n");
+        exit(2);
     }
     else {
-        char line[LINE_SIZE];
-        while (fgets(line, sizeof(line), file)) {
-            process_array[i] = process_from_line(line);
-            i += 1;
+        Process* process;
+        for (process = find_next_process(file); process != NULL; process = find_next_process(file)){
+            process_array[i] = process;
+            i++;
         }
-        
         fclose(file);
     }
     

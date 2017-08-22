@@ -17,6 +17,13 @@
 #define RUNNING 2
 #define READY 3
 
+/** @defgroup process Process
+ *  This includes all the elements of process
+ */
+
+/**
+ * @ingroup process
+ */
 struct Process {
     /**
      * The id of the process
@@ -48,7 +55,6 @@ struct Process {
      */
     int initial_time;
     
-    
     /**
      * The priority, takes values between 0 to 63, but mapped from 1 to 64
      */
@@ -61,13 +67,14 @@ struct Process {
      * 2: Running
      * 3: Ready
      */
-    int state:2;
+    unsigned int state:2;
     
 };
 
 typedef struct Process Process;
 
 /**
+ * @ingroup process
  * @brief Initialize a new process
  *
  * @param name The name of the process
@@ -78,12 +85,28 @@ typedef struct Process Process;
 Process* init_process(char name[], int priority, int initial_time, int times_size, int* times);
 
 /**
+ * @ingroup process
  * @brief Free the memory allocated by the process
  *
  * @param process The process that's going to be freed
  */
 void free_process(Process* process);
 
+/**
+ * @ingroup process
+ * @brief Change the current state of the process
+ *
+ * @param process The process that's going to be changed
+ * @param state The new state of the process
+ */
+void change_state(Process* process, int state);
+
+/**
+ * @ingroup process
+ * @brief Prints the information of the process
+ *
+ * @param process The process that's going to be printed
+ */
 void print_process(Process* process);
 
 #endif /* Process_h */

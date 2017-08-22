@@ -35,12 +35,47 @@ Process* init_process(char name[], int priority, int initial_time, int times_siz
     
     process -> priority = priority;
     
-    process -> state = WAITING;
+    process -> state = READY;
     
     return process;
 }
 
+void change_state(Process* process, int state){
+    switch (state) {
+        case RUNNING:
+            process -> state = RUNNING;
+            break;
+            
+        case WAITING:
+            if (process -> state == RUNNING){
+                process -> actual_time++;
+                process -> state = WAITING;
+            } else {
+                printf("Error on changing the state to waiting by the process:\n");
+                print_process(process);
+            }
+            break;
+            
+        case READY:
+            if (process -> state == WAITING){
+                process -> actual_time++;
+                process -> state = READY;
+            } else {
+                printf("Error on changing the state to ready by the process:\n");
+                print_process(process);
+            }
+            break;
+            
+        default:
+            break;
+    }
+}
+
 void print_process(Process* process){
+    if (process == NULL){
+        printf("This process is empty\n");
+        return;
+    }
     printf("PID: %d\nNAME: %s\nINITIAL_TIME: %d\nPRIORITY: %d\nSTATE: %d\nSIZE TIMES: %d\n",
            process->pid,
            process->name,

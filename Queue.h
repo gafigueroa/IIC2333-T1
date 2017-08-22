@@ -17,7 +17,13 @@
 #define ROUNDROBIN 1
 #define PRIORITY 2
 
+/** @defgroup queue Queue
+ *  This includes all the queue elements
+ */
+
+
 /**
+ * @ingroup queue
  * @brief Declarations of the nodes of the queue
  */
 struct node_queue {
@@ -26,15 +32,18 @@ struct node_queue {
      */
     Process* process;
     
+    int priority;
     /**
      * The next node
      */
     struct node_queue* next;
     
+    
 };
 typedef struct node_queue node_queue;
 
 /**
+ * @ingroup queue
  * @brief Declarations of the queue
  *
  * This struct defines how the queue works, 
@@ -43,10 +52,12 @@ typedef struct node_queue node_queue;
 struct Queue {
     node_queue* head;
     void (*organize)(struct Queue*);
+    int size;
 };
 typedef struct Queue Queue;
 
 /**
+ * @ingroup queue
  * @brief Initialize the queue with the type
  * 
  * @param type The type of the queue:
@@ -59,6 +70,7 @@ typedef struct Queue Queue;
 Queue* init_queue(int type);
 
 /**
+ * @ingroup queue
  * @brief Push an element to the queue
  *
  * @param queue The queue where the element is going to be added
@@ -67,6 +79,7 @@ Queue* init_queue(int type);
 void enqueue(Queue* queue, Process* process);
 
 /**
+ * @ingroup queue
  * @brief Gets the next element from the queue
  *
  * @param queue The queue from where we are going to get the element
@@ -76,13 +89,17 @@ void enqueue(Queue* queue, Process* process);
 Process* dequeue(Queue* queue);
 
 /**
+ * @ingroup queue
  * @brief Free the memory allocated by the queue
  *
  * @param queue The queue that's going to be freed
  */
 void free_queue(Queue* queue);
 
+int minPriority(Queue* queue);
+
 /**
+ * @ingroup queue
  * @brief Change the value of the quantum for round robin
  *
  * @param new_quantum The new value of the quantum
