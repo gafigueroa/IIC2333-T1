@@ -33,9 +33,9 @@ struct node_queue {
     Process* process;
 
     /**
-     * The next node
+     * Priority of the process calculated according to it's type
      */
-    //struct node_queue* next;
+    int priority;
 
 };
 typedef struct node_queue node_queue;
@@ -48,11 +48,20 @@ typedef struct node_queue node_queue;
  * the method organize will depend of the type of the queue
  */
 struct Queue {
-    //node_queue* head;
+    /**
+    * Array of node_queue's
+    */
     node_queue** node_array;
-    void (*organize)(struct Queue*);
+
+    /**
+     * @brief Calculate the priority of the node depending on the scheduler type
+     * @param Number from which it should calculate the priority:
+     * @return Returns the calculated priority
+     */
+    int (*node_priority)(int);
+
     /*
-    * Amount of elements in the heap
+    * Amount of elements in the node_array
     */
     int size;
 };

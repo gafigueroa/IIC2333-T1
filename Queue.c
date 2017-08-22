@@ -8,6 +8,7 @@
 
 #include "Queue.h"
 #include <stdlib.h>
+#include <math.h>
 
 #define LEFT(x) 2*x
 #define RIGHT(x) 2*x + 1
@@ -18,27 +19,34 @@ void organize_roundrobin(Queue*);
 void organize_priority(Queue*);
 
 int QUEUE_LENGTH = 50;
+int FCFS_PRIORITY = -1;
 int quantum = 3;
 
 
-Queue* init_queue(int type){
-    Queue* queue = malloc(sizeof(Queue));
-    //queue -> head = NULL;
-    if (type == FCFS){
-        queue -> organize = organize_fcfs;
-    }
-    else if (type == ROUNDROBIN){
-        queue -> organize = organize_roundrobin;
-    }
-    else if (type == PRIORITY){
-        queue -> organize = organize_priority;
-    }
-    queue -> size = 1;
-    queue -> node_array[0] = NULL;
-    queue -> node_array = malloc(QUEUE_LENGTH * sizeof(node_queue*));
-    return queue;
+/**
+* @brief Priority based on FIFO
+*/
+int calculate_fcfs(int process_priority){
+    FCFS_PRIORITY++;
+    return FCFS_PRIORITY;
 }
 
+/**
+* @brief Calculate the priority based on round robin
+*/
+int calculate_roundrobin(int process_priority){
+    int new_priority = process_priority * quantum;
+    int exponent = process_priority / quantum;
+    double dblExponent = (double)exponent;
+    return (int)(new_priority + pow(-1.0, dblExponent) * process_priority);
+}
+
+/**
+* @brief Use the process priority for the node_queue
+*/
+int calculate_priority(int process_priority){
+    return process_priority;
+}
 
 /**
  * @brief Initialize a new node with the process
@@ -46,9 +54,27 @@ Queue* init_queue(int type){
 node_queue* init_node_queue(Process* process){
     node_queue* node = malloc(sizeof(node_queue));
     node -> process = process;
+    node -> priority = 0;
     return node;
 }
 
+
+Queue* init_queue(int type){
+    Queue* queue = malloc(sizeof(Queue));
+    if (type == FCFS){
+        queue -> node_priority = calculate_fcfs;
+    }
+    else if (type == ROUNDROBIN){
+        queue -> node_priority = calculate_roundrobin;
+    }
+    else if (type == PRIORITY){
+        queue -> node_priority = calculate_priority;
+    }
+    queue -> node_array[0] = NULL;
+    queue -> size = 0;
+    queue -> node_array = malloc(QUEUE_LENGTH * sizeof(node_queue*));
+    return queue;
+}
 
 /**
  * @brief Exchange position of two nodes on the node_array
@@ -77,11 +103,12 @@ void enqueue(Queue* queue, Process* process){
      if(queue->size > QUEUE_LENGTH){
        increaseQueue(queue);
      }
-     while(i && node -> process -> priority < queue -> node_array[PARENT(i)] -> process -> priority) {
+     node -> priority = queue -> node_priority(process -> priority);
+     while(i && node -> priority < queue -> node_array[PARENT(i)] -> priority) {
          queue -> node_array[i] = queue -> node_array[PARENT(i)];
          i = PARENT(i) ;
      }
-     queue -> node_array[i] = node ;
+     queue -> node_array[i] = node;
 }
 
 /**
@@ -91,12 +118,12 @@ void minHeapify(Queue* queue, int i){
     int l = LEFT(i);
     int r = RIGHT(i);
     int min = i;
-    if(l <= queue -> size && queue -> node_array[l] -> process -> priority <
-      queue -> node_array[min] -> process -> priority){
+    if(l <= queue -> size && queue -> node_array[l] -> priority >
+      queue -> node_array[min] -> priority){
         min = l;
       }
-    if(r <= queue -> size && queue -> node_array[r] -> process -> priority <
-      queue -> node_array[min] -> process -> priority){
+    if(r <= queue -> size && queue -> node_array[r] -> priority <
+      queue -> node_array[min] -> priority){
         min = r;
       }
     if(min != i){
@@ -106,11 +133,11 @@ void minHeapify(Queue* queue, int i){
 }
 
 /**
-* @brief Pop and return the process with max priority in the queue
+* @brief Pop and return the process with min priority in the queue
 */
 Process* dequeue(Queue* queue){
     if(queue -> size < 1){
-      return NULL
+      return NULL;
     }
     node_queue* minNode = queue -> node_array[1];
     *queue -> node_array[1] = *queue -> node_array[queue -> size];
@@ -119,27 +146,6 @@ Process* dequeue(Queue* queue){
     return minNode -> process;
 }
 
-
-void organize_fcfs(Queue* queue){
-    /*
-     Este scheduler elige cada proceso en el orden en que entraron a la cola, sin importar la
-     prioridad asociada a cada uno.
-     */
-}
-
-void organize_roundrobin(Queue* queue){
-    /*
-     Este scheduler asigna un quantum Qk a un proceso con identificador k en función de su prioridad Pk.
-     */
-
-}
-
-void organize_priority(Queue* queue){
-    /*
-     Este scheduler ordena los procesos por orden de prioridad. En caso de que dos o más procesos tengan igual prioridad,
-     éstos se atienden según FCFS.
-     */
-}
 
 void free_queue(Queue* queue){
     for(int i=0;i<queue->size;i++){
