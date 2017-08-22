@@ -153,10 +153,14 @@ Process* dequeue(Queue* queue){
     return minNode -> process;
 }
 
+void free_node_queue(node_queue* node){
+    free_process(node -> process);
+    free(node);
+}
 
 void free_queue(Queue* queue){
     for(int i=0;i<queue->size;i++){
-      free_process(queue -> node_array[i] -> process);
+      free_node_queue(queue -> node_array[i]);
     }
     free(queue -> node_array);
     free(queue);
