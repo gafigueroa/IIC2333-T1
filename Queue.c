@@ -132,6 +132,10 @@ void minHeapify(Queue* queue, int i){
     }
 }
 
+int minPriority(Queue* queue){
+  return queue -> node_array[1] -> priority;
+}
+
 /**
 * @brief Pop and return the process with min priority in the queue
 */
