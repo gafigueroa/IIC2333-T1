@@ -16,6 +16,10 @@ void organize_priority(Queue*);
 
 int quantum = 3;
 
+int minPriority(Queue* queue){
+    return 0;
+}
+
 Queue* init_queue(int type){
     Queue* queue = malloc(sizeof(Queue));
     queue -> head = NULL;

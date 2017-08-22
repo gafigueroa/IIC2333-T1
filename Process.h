@@ -92,6 +92,8 @@ Process* init_process(char name[], int priority, int initial_time, int times_siz
  */
 void free_process(Process* process);
 
+void free_process_array(Process** process_array, int size);
+
 /**
  * @ingroup process
  * @brief Change the current state of the process

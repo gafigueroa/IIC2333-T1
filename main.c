@@ -14,8 +14,14 @@
 #include <string.h>
 
 
+int array_size;
+Process** process_array;
+Scheduler* scheduler;
+
 void handler(int code){
     printf("STATS:\nJuan: 1\nViserion: 0\nWhite walkers: 2\n");
+    free_process_array(process_array, array_size);
+    free_schedule(scheduler);
     exit(0);
 }
 
@@ -35,11 +41,9 @@ int main(int argc, const char * argv[]) {
     }
     
     //Read the file and creates the processes
-    int array_size;
-    Process** process_array = read_file(argv[2], &array_size);
+    process_array = read_file(argv[2], &array_size);
     
     //Initialize the scheduler depending on the type
-    Scheduler* scheduler;
     if (!strcmp(argv[1], "fcfs")){
         scheduler = init_scheduler(FCFS);
     }
@@ -56,6 +60,9 @@ int main(int argc, const char * argv[]) {
     for (time = 0; 1; time++){
         
     }
+    
+    free_process_array(process_array, array_size);
+    free_schedule(scheduler);
     
     return 0;
 }

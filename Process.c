@@ -11,10 +11,6 @@
 
 int next_pid = 0;
 
-void free_process(Process* process){
-    free(process);
-}
-
 Process* init_process(char name[], int priority, int initial_time, int times_size, int* times){
     Process* process = malloc(sizeof(Process));
     
@@ -88,4 +84,16 @@ void print_process(Process* process){
         printf("TIME%d: %d\n", i, process->times[i]);
     }
     printf("\n");
+}
+
+void free_process(Process* process){
+    free(process);
+}
+
+void free_process_array(Process** process_array, int size){
+    int i;
+    for (i = 0; i < size; i++){
+        free_process(process_array[i]);
+    }
+    free(process_array);
 }
