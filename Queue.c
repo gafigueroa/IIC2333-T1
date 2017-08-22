@@ -133,6 +133,9 @@ void minHeapify(Queue* queue, int i){
 }
 
 int minPriority(Queue* queue){
+  if(queue -> size < 1){
+    return -1;
+  }
   return queue -> node_array[1] -> priority;
 }
 
