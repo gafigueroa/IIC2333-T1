@@ -27,17 +27,17 @@ int main(int argc, const char * argv[]) {
         printf("How to use the program:\n./simulator <type of scheduler> <filename> [<quantum>]\n");
         return 1;
     }
-    
+
     //If we have a value for the quantum, we need to set it
     if (argc == 4){
         int new_quantum = atoi(argv[3]);
         change_quantum(new_quantum);
     }
-    
+
     //Read the file and creates the processes
     int array_size;
     Process** process_array = read_file(argv[2], &array_size);
-    
+
     //Initialize the scheduler depending on the type
     Scheduler* scheduler;
     if (!strcmp(argv[1], "fcfs")){
@@ -51,11 +51,18 @@ int main(int argc, const char * argv[]) {
     } else {
         printf("Type of sheduler incorrect. Please choose between fcfs, roundrobin and priority");
     }
-    
     int time;
-    for (time = 0; 1; time++){
-        
+    for(int i = 0; i < array_size; i++){
+      enqueue(scheduler -> ready_queue, process_array[i]);
     }
-    
+    //dequeue(scheduler -> ready_queue);
+    while(minPriority(scheduler -> ready_queue) >= 0){
+      for (int i = 0; i < scheduler -> ready_queue -> size; i++){
+        printf("TAKING OUT OF THE QUEUE THE NEXT PROCESS WITH NODE PRIORITY = %d:\n",
+                minPriority(scheduler -> ready_queue));
+        print_process(scheduler -> ready_queue -> node_array[i + 1] -> process);
+      }
+      dequeue(scheduler -> ready_queue);
+    }
     return 0;
 }

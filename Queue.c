@@ -99,12 +99,12 @@ void increaseQueue(Queue *queue){
  */
 void enqueue(Queue* queue, Process* process){
      node_queue* node = init_node_queue(process);
-     int i = (queue->size)++ ;
-     if(queue->size > QUEUE_LENGTH){
+     int i = ++(queue->size);
+     if(queue -> size > QUEUE_LENGTH){
        increaseQueue(queue);
      }
      node -> priority = queue -> node_priority(process -> priority);
-     while(i && node -> priority < queue -> node_array[PARENT(i)] -> priority) {
+     while(PARENT(i) != 0 && node -> priority < queue -> node_array[PARENT(i)] -> priority) {
          queue -> node_array[i] = queue -> node_array[PARENT(i)];
          i = PARENT(i) ;
      }
@@ -143,14 +143,14 @@ int minPriority(Queue* queue){
 * @brief Pop and return the process with min priority in the queue
 */
 Process* dequeue(Queue* queue){
-    if(queue -> size < 1){
+    if(!queue || queue -> size < 1){
       return NULL;
     }
-    node_queue* minNode = queue -> node_array[1];
+    Process* minProcess =queue -> node_array[1] -> process;
     *queue -> node_array[1] = *queue -> node_array[queue -> size];
     queue -> size--;
     minHeapify(queue, 1);
-    return minNode -> process;
+    return minProcess;
 }
 
 void free_node_queue(node_queue* node){
