@@ -63,6 +63,10 @@ void tick_process_in_execution(Scheduler* scheduler){
     }
 }
 
+void schedule(Scheduler* scheduler, Process* process){
+    enqueue(scheduler -> ready_queue, process);
+}
+
 /*
  * @brief Manage the state of the processes in the queues. Moves elements from waiting to ready if possible
  */
