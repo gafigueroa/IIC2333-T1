@@ -101,7 +101,7 @@ void free_process_array(Process** process_array, int size);
  * @param process The process that's going to be changed
  * @param state The new state of the process
  */
-void change_state(Process* process, int state);
+int change_state(Process* process, int state);
 
 /**
  * @ingroup process

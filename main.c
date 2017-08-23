@@ -59,15 +59,18 @@ int main(int argc, const char * argv[]) {
     }
     
     int time;
-    for (time = 0; 1; time++){
-        if (time == minPriority(process_queue)){
+    for (time = 0; time < 10000; time++){
+        while (time == minPriority(process_queue)){
             printf("The time %d is when the min should enter\n", time);
-            dequeue(process_queue);
+            Process* process_to_schedule = dequeue(process_queue);
+            schedule(scheduler, process_to_schedule);
         }
     }
     
-    free_process_array(process_array, array_size);
-    free_schedule(scheduler);
-    
+    int i;
+    for (i = 0; i < 40; i++){
+        tick(scheduler);
+    }
+
     return 0;
 }
