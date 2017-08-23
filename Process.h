@@ -92,6 +92,13 @@ Process* init_process(char name[], int priority, int initial_time, int times_siz
  */
 void free_process(Process* process);
 
+/**
+ * @ingroup process
+ * @brief Free the memory allocated by the array of processes
+ *
+ * @param process_array The array that's going to be freed
+ * @param size The size of the array
+ */
 void free_process_array(Process** process_array, int size);
 
 /**
