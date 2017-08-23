@@ -138,7 +138,7 @@ void minHeapify(Queue* queue, int i){
     int l = LEFT(i);
     int r = RIGHT(i);
     int min = i;
-    if(l <= queue -> size && queue -> node_array[l] -> priority >
+    if(l <= queue -> size && queue -> node_array[l] -> priority <
       queue -> node_array[min] -> priority){
         min = l;
       }
