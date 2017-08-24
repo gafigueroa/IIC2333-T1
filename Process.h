@@ -29,37 +29,42 @@ struct Process {
      * The id of the process
      */
     int pid;
-    
+
     /**
      * The name of the process
      */
     char name[NAME_SIZE];
-    
+
     /**
      * Amount of times that are going to be processed
      */
     int size_times;
-    
+
     /**
      * Array of ints representing the times that the process is going to be processing
      */
     int* times;
-    
+
     /**
      * Position of the array representing the actual time
      */
     int actual_time;
-    
+
     /**
      * When the process is going to start
      */
     int initial_time;
-    
+
     /**
      * The priority, takes values between 0 to 63, but mapped from 1 to 64
      */
     int priority:6;
-    
+
+    /**
+    * Qk value for roundrobin, on other cases is 0
+    */
+    int qk;
+
     /**
      * The state of the process:
      * 0: NULL
@@ -68,7 +73,7 @@ struct Process {
      * 3: Ready
      */
     unsigned int state:2;
-    
+
 };
 
 typedef struct Process Process;

@@ -13,26 +13,26 @@ int next_pid = 0;
 
 Process* init_process(char name[], int priority, int initial_time, int times_size, int* times){
     Process* process = malloc(sizeof(Process));
-    
+
     process -> pid = next_pid;
     next_pid += 1;
-    
+
     int i;
     for (i = 0; i < NAME_SIZE; i++){
         process -> name[i] = name[i];
     }
-    
+
     process -> size_times = times_size;
     process -> times = times;
-    
+    process -> qk = 0;
     process -> actual_time = 0;
-    
+
     process -> initial_time = initial_time;
-    
+
     process -> priority = priority;
-    
+
     process -> state = READY;
-    
+
     return process;
 }
 
@@ -45,7 +45,7 @@ int change_state(Process* process, int state){
         case RUNNING:
             process -> state = RUNNING;
             return 1;
-            
+
         case WAITING:
             if (process -> state == RUNNING){
                 process -> actual_time++;
@@ -59,7 +59,7 @@ int change_state(Process* process, int state){
                 return 0;
             }
             return 1;
-            
+
         case READY:
             if (process -> state == WAITING){
                 process -> actual_time++;
@@ -70,7 +70,7 @@ int change_state(Process* process, int state){
                 return 0;
             }
             break;
-            
+
         default:
             return 0;
     }

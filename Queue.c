@@ -67,7 +67,7 @@ node_queue* init_node_queue(Process* process){
 Queue* init_queue(int type){
     Queue* queue = malloc(sizeof(Queue));
     queue -> type = type;
-    
+
     //Chose which function is going to use to calculate the priority in the queue
     switch (type) {
         case FCFS:
@@ -76,11 +76,11 @@ Queue* init_queue(int type){
         case ROUNDROBIN:
             queue -> node_priority = calculate_roundrobin;
             break;
-            
+
         case PRIORITY:
             queue -> node_priority = calculate_priority;
             break;
-            
+
         default:
             queue -> node_priority = calculate_default;
             break;
@@ -128,6 +128,9 @@ void enqueue_priority(Queue* queue, Process* process, int priority){
         printf("\n--------THE MAX AMOUNT OF PROCESSES HAS BEEN REACHED--------\n");
     }
     node -> priority = queue -> node_priority(priority);
+    if(queue -> type == ROUNDROBIN){
+      node -> process -> qk = (int)ceil((double)(node -> priority) / 64.0);
+    }
     while(PARENT(i) != 0 && node -> priority < queue -> node_array[PARENT(i)] -> priority) {
         queue -> node_array[i] = queue -> node_array[PARENT(i)];
         i = PARENT(i) ;
