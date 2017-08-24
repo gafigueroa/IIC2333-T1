@@ -76,6 +76,15 @@ int change_state(Process* process, int state){
     }
 }
 
+int max_current_time_process(Process* process){
+    if (process){
+        int pos = process -> actual_time;
+        int max_time = process -> times[pos];
+        return max_time;
+    }
+    return 0;
+}
+
 void print_process(Process* process){
     printf("going to print\n");
     if (process == NULL){

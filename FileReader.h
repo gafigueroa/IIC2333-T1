@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 /** @defgroup reader File Reader
- *  Reads the file
+ *  @brief Reads the file and creates the processes
  */
 
 /**

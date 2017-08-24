@@ -18,7 +18,7 @@
 #define READY 3
 
 /** @defgroup process Process
- *  This includes all the elements of process
+ *  @brief Definition of Process and all the functions related
  */
 
 /**
@@ -117,5 +117,12 @@ int change_state(Process* process, int state);
  * @param process The process that's going to be printed
  */
 void print_process(Process* process);
+
+/**
+ * @ingroup process
+ * Gets the amount of time that the process can stay in the scheduler according to the current time that's being processed. For example, in round robin, if we have
+ * a quantum 6 and our current time is 10, the max will be 6.
+ */
+int max_current_time_process(Process* process);
 
 #endif /* Process_h */

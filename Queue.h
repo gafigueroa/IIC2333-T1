@@ -19,7 +19,7 @@
 #define DEFAULT 3
 
 /** @defgroup queue Queue
- *  This includes all the queue elements
+ *  @brief Queue definition and all the functions on how to use it
  */
 
 
@@ -85,6 +85,8 @@ typedef struct Queue Queue;
  * @return The queue that has been initialized
  */
 Queue* init_queue(int type);
+
+Queue* init_queue_array_process(int type, Process** process_array, int size);
 
 /**
  * @ingroup queue

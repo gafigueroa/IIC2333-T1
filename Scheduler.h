@@ -13,7 +13,7 @@
 #include "Queue.h"
 
 /** @defgroup scheduler Scheduler
- *  This includes all the elements of the scheduler
+ *  @brief The Scheduler and all the elements related
  */
 
 

@@ -89,6 +89,16 @@ Queue* init_queue(int type){
     return queue;
 }
 
+Queue* init_queue_array_process(int type, Process** process_array, int size){
+    Queue* queue = init_queue(type);
+    int i;
+    for (i = 0; i < size; i++) {
+        enqueue_priority(queue, process_array[i], process_array[i]->initial_time);
+    }
+    return queue;
+}
+
+
 /**
  * @brief Exchange position of two nodes on the node_array
  */
@@ -166,10 +176,12 @@ Process* dequeue(Queue* queue){
     if(!queue || queue -> size < 1){
       return NULL;
     }
+    node_queue* processNode = queue -> node_array[1];
     Process* minProcess =queue -> node_array[1] -> process;
-    *queue -> node_array[1] = *queue -> node_array[queue -> size];
+    queue -> node_array[1] = queue -> node_array[queue -> size];
     queue -> size--;
     minHeapify(queue, 1);
+    free(processNode);
     return minProcess;
 }
 

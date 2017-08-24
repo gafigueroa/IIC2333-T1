@@ -23,7 +23,7 @@ void handler(int code){
     free_process_array(process_array, array_size);
     free_schedule(scheduler);
     printf("Queue size: %d", process_queue -> size);
-    exit(0);
+    exit(1);
 }
 
 int main(int argc, const char * argv[]) {
@@ -43,20 +43,24 @@ int main(int argc, const char * argv[]) {
     
     //Read the file and creates the processes
     process_array = read_file(argv[2], &array_size);
-    process_queue = read_file_queue(argv[2], &array_size);
+    
     
     //Initialize the scheduler depending on the type
     if (!strcmp(argv[1], "fcfs")){
         scheduler = init_scheduler(FCFS);
+        process_queue = init_queue_array_process(FCFS, process_array, array_size);
     }
     else if (!strcmp(argv[1], "roundrobin")){
         scheduler = init_scheduler(ROUNDROBIN);
+        process_queue = init_queue_array_process(ROUNDROBIN, process_array, array_size);
     }
     else if (!strcmp(argv[1], "priority")){
         scheduler = init_scheduler(PRIORITY);
+        process_queue = init_queue_array_process(PRIORITY, process_array, array_size);
     } else {
         printf("Type of sheduler incorrect. Please choose between fcfs, roundrobin and priority");
     }
+    
     
     int time;
     for (time = 0; time < 10000; time++){
@@ -72,5 +76,8 @@ int main(int argc, const char * argv[]) {
         tick(scheduler);
     }
 
+    free_process_array(process_array, array_size);
+    free_schedule(scheduler);
+    
     return 0;
 }

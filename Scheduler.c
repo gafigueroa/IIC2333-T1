@@ -26,6 +26,7 @@ void free_schedule(Scheduler* scheduler){
     free(scheduler);
 }
 
+
 /*
  * @brief Manage the current process being executed in the scheduler
  */
