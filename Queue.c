@@ -18,7 +18,8 @@ void organize_fcfs(Queue*);
 void organize_roundrobin(Queue*);
 void organize_priority(Queue*);
 
-int QUEUE_LENGTH = 50;
+int QUEUE_LENGTH = 2000;
+
 int FCFS_PRIORITY = -1;
 int quantum = 3;
 
@@ -124,7 +125,7 @@ void enqueue_priority(Queue* queue, Process* process, int priority){
     node_queue* node = init_node_queue(process);
     int i = ++(queue->size);
     if(queue -> size > QUEUE_LENGTH){
-        increaseQueue(queue);
+        printf("\n--------THE MAX AMOUNT OF PROCESSES HAS BEEN REACHED--------\n");
     }
     node -> priority = queue -> node_priority(priority);
     while(PARENT(i) != 0 && node -> priority < queue -> node_array[PARENT(i)] -> priority) {
@@ -186,7 +187,7 @@ Process* dequeue(Queue* queue){
 }
 
 void free_node_queue(node_queue* node){
-    free_process(node -> process);
+    //free_process(node -> process);
     free(node);
 }
 

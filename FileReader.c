@@ -95,18 +95,22 @@ int amount_lines_file(const char* filename){
     int amount_lines = 1;
     FILE* file = fopen(filename, "r");
     int ch = 0;
+    int prev_ch = 0;
     if (file == NULL){
         return 0;
     }
     while(!feof(file))
     {
+        prev_ch = ch;
         ch = fgetc(file);
         if(ch == '\n')
         {
             amount_lines++;
         }
     }
-    
+    if (prev_ch == '\n'){
+        amount_lines--;
+    }
     fclose(file);
     
     return amount_lines;

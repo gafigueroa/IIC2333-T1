@@ -106,6 +106,7 @@ void print_process(Process* process){
 }
 
 void free_process(Process* process){
+    free(process->times);
     free(process);
 }
 
