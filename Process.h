@@ -1,9 +1,9 @@
 //
 //  Process.h
-//  IIC2333-T0
+//  T1
 //
-//  Created by Guillermo Figueroa on 8/16/17.
-//  Copyright © 2017 Guillermo Figueroa. All rights reserved.
+//  Created by Guillermo Figueroa and Juan Cortés on 8/16/17.
+//  Copyright © 2017 Guillermo Figueroa and Juan Cortés. All rights reserved.
 //
 
 #ifndef Process_h
