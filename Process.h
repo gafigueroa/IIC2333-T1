@@ -152,6 +152,13 @@ int change_state(Process* process, int state);
 
 /**
  * @ingroup process
+ * @brief Get the total amount of time that the process has been executing in scheduler
+ *
+ */
+int total_executing_time(Process* process);
+
+/**
+ * @ingroup process
  * @brief Prints the information of the process
  *
  * @param process The process that's going to be printed

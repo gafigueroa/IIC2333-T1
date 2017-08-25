@@ -87,6 +87,17 @@ int change_state(Process* process, int state){
     }
 }
 
+int total_executing_time(Process* process){
+    int pos = process -> actual_time;
+    int total = 0;
+    int i;
+    for (i = 0; i < pos; i+=2){
+        total += process -> times[i];
+    }
+    total += process -> time_executed;
+    return total;
+}
+
 int max_current_time_process(Process* process){
     if (process){
         int pos = process -> actual_time;
