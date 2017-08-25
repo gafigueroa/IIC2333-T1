@@ -29,17 +29,17 @@ void free_schedule(Scheduler* scheduler){
 int actual_max_time(Process* process){
     int pos = process -> actual_time;
     int max_actual_time = process -> times[pos];
-    
+
     return max_actual_time;
 }
 
 int get_max_time_process(Scheduler* scheduler, Process* process){
     int pos = process -> actual_time;
     int max_actual_time = process -> times[pos];
-    
+
     int initial_time_this_round = process -> time_executed - scheduler -> time_process;
     int max_time_left = max_actual_time - initial_time_this_round;
-    
+
     if (process -> qk < max_time_left){
         return initial_time_this_round + process -> qk;
     }
@@ -79,7 +79,7 @@ void tick_process_in_execution(Scheduler* scheduler){
         //If there is no element in the ready queue, then change the process to null (idle)
         if (scheduler -> ready_queue -> size == 0){
             scheduler -> process_in_execution = NULL;
-            
+
             //If we have processes that can execute, execute one
         } else {
             //Get the next process
@@ -124,13 +124,13 @@ void tick_round(Scheduler* scheduler){
             scheduler -> process_in_execution = NULL;
         }
     }
-    
+
     if (!scheduler -> process_in_execution){
         scheduler -> time_process = 0;
         //If there is no element in the ready queue, then change the process to null (idle)
         if (scheduler -> ready_queue -> size == 0){
             scheduler -> process_in_execution = NULL;
-            
+
             //If we have processes that can execute, execute one
         } else {
             //Get the next process
@@ -173,11 +173,11 @@ void tick_round_robin(Scheduler* scheduler){
             scheduler -> time_process = 0;
             scheduler -> process_in_execution = NULL;
             printf("IDLE\n");
-            
+
             //If there is no element in the ready queue, then change the process to null (idle)
             if (scheduler -> ready_queue -> size == 0){
                 scheduler -> process_in_execution = NULL;
-                
+
                 //If we have processes that can execute, execute one
             } else {
                 //Get the next process
@@ -195,11 +195,14 @@ void tick_round_robin(Scheduler* scheduler){
         //If there is no element in the ready queue, then change the process to null (idle)
         if (scheduler -> ready_queue -> size == 0){
             scheduler -> process_in_execution = NULL;
-            
+
         //If we have processes that can execute, execute one
         } else {
             //Get the next process
             Process* process_exec = dequeue(scheduler -> ready_queue);
+            if(process_exec -> response_time == -1){
+              process_exec -> response_time = time - process_exec -> initial_time;
+            }
             //Change the process state to running and add it as the process being executed
             change_state(process_exec, RUNNING);
             scheduler -> process_in_execution = process_exec;
@@ -209,13 +212,14 @@ void tick_round_robin(Scheduler* scheduler){
 
 void schedule(Scheduler* scheduler, Process* process){
     enqueue(scheduler -> ready_queue, process);
+    printf("Process '%s' created\n", process -> name);
 }
 
 /*
  * @brief Manage the state of the processes in the queues. Moves elements from waiting to ready if possible
  */
 void tick_update_queue(Scheduler* scheduler){
-    
+
     //If the process has waited enough, this for each process
     while (minPriority(scheduler->waiting_queue) == scheduler_time){
         Process* process_ready = dequeue(scheduler -> waiting_queue);
@@ -230,10 +234,10 @@ void tick_update_queue(Scheduler* scheduler){
  */
 void tick(Scheduler* scheduler){
     printf("T:%d | ", scheduler_time);
-    
+
     //Update the queues
     tick_update_queue(scheduler);
-    
+
     //Manage the current process being executed
     if (scheduler -> ready_queue -> type == ROUNDROBIN){
         tick_round(scheduler);

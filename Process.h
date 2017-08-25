@@ -17,6 +17,10 @@
 #define RUNNING 2
 #define READY 3
 
+int time;
+int process_finished;
+
+
 /** @defgroup process Process
  *  @brief Definition of Process and all the functions related
  */
@@ -85,6 +89,16 @@ struct Process {
     * Qk value for roundrobin, on other cases is 0
     */
     int qk;
+
+    /**
+    * amount of time from when a request was submitted until the first response is executed.
+    */
+    int response_time;
+
+    /**
+    * amount of time to execute a particular process
+    */
+    int turnaround_time;
 
     /**
      * The state of the process:
