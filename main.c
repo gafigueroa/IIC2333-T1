@@ -90,7 +90,6 @@ int main(int argc, const char * argv[]) {
     for (time = 0; time < 200; time++){
         while (time == minPriority(process_queue)){
             Process* process_to_schedule = dequeue(process_queue);
-            printf("Scheduler choose the process %s to execute on cpu\n", process_to_schedule -> name);
             schedule(scheduler, process_to_schedule);
         }
         tick(scheduler);

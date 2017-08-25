@@ -97,6 +97,7 @@ void tick_process_in_execution(Scheduler* scheduler){
             //Change the process state to running and add it as the process being executed
             change_state(process_exec, RUNNING);
             scheduler -> process_in_execution = process_exec;
+            printf("Scheduler choose the process %s to execute on cpu\n", scheduler -> process_in_execution -> name);
         }
     }
 }
@@ -156,6 +157,7 @@ void tick_round(Scheduler* scheduler){
             //Change the process state to running and add it as the process being executed
             change_state(process_exec, RUNNING);
             scheduler -> process_in_execution = process_exec;
+            printf("Scheduler choose the process %s to execute on cpu\n", scheduler -> process_in_execution -> name);
         }
     }
 }
