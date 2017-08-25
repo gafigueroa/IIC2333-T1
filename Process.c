@@ -88,6 +88,9 @@ int change_state(Process* process, int state){
 }
 
 int total_executing_time(Process* process){
+    if (!process){
+        return 0;
+    }
     int pos = process -> actual_time;
     int total = 0;
     int i;
@@ -95,6 +98,7 @@ int total_executing_time(Process* process){
         total += process -> times[i];
     }
     total += process -> time_executed;
+    printf("Total: %d\n", total);
     return total;
 }
 
