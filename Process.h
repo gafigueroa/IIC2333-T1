@@ -157,6 +157,10 @@ int change_state(Process* process, int state);
  */
 int total_executing_time(Process* process);
 
+int intervals_executed(Process* process);
+
+int intervals_left(Process* process);
+
 /**
  * @ingroup process
  * @brief Prints the information of the process
