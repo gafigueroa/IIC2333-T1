@@ -26,6 +26,8 @@ Process* init_process(char name[], int priority, int initial_time, int times_siz
     process -> times = times;
     process -> qk = 0;
     process -> actual_time = 0;
+    process -> time_executed = 0;
+    process -> total_time_waiting = 0;
 
     process -> initial_time = initial_time;
 
@@ -50,7 +52,7 @@ int change_state(Process* process, int state){
             if (process -> state == RUNNING){
                 process -> actual_time++;
                 if (process -> actual_time >= process -> size_times){
-                    printf("Process finished\n");
+                    printf("FINISHED Process: %s\n", process -> name);
                     return 0;
                 }
                 process -> state = WAITING;
@@ -63,6 +65,9 @@ int change_state(Process* process, int state){
         case READY:
             if (process -> state == WAITING){
                 process -> actual_time++;
+                process -> state = READY;
+                return 1;
+            } else if (process -> state == RUNNING){
                 process -> state = READY;
                 return 1;
             } else {
@@ -91,11 +96,12 @@ void print_process(Process* process){
         printf("This process is empty\n");
         return;
     }
-    printf("PID: %d\nNAME: %s\nINITIAL_TIME: %d\nPRIORITY: %d\nSTATE: %d\nSIZE TIMES: %d\n",
+    printf("PID: %d\nNAME: %s\nINITIAL_TIME: %d\nPRIORITY: %d\nQk: %d\nSTATE: %d\nSIZE TIMES: %d\n",
            process->pid,
            process->name,
            process->initial_time,
            process->priority,
+           process->qk,
            process->state,
            process->size_times);
     int i;

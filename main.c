@@ -60,7 +60,7 @@ int main(int argc, const char * argv[]) {
     
     
     int time;
-    for (time = 0; time < 100; time++){
+    for (time = 0; time < 200; time++){
         while (time == minPriority(process_queue)){
             Process* process_to_schedule = dequeue(process_queue);
             schedule(scheduler, process_to_schedule);
@@ -68,7 +68,6 @@ int main(int argc, const char * argv[]) {
         tick(scheduler);
     }
     
-
 
     free_process_array(process_array, array_size);
     free_schedule(scheduler);

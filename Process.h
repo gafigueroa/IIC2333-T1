@@ -44,11 +44,31 @@ struct Process {
      * Array of ints representing the times that the process is going to be processing
      */
     int* times;
+    
+    /**
+     * The amount of time that the process has been executing in the actual time
+     */
+    int time_executed;
+        
+    /**
+     * The total amount of time that the process has been waiting
+     */
+    int total_time_waiting;
 
     /**
      * Position of the array representing the actual time
      */
     int actual_time;
+    
+    /**
+     * Amount of times that the process has been chosen by the scheduler
+     */
+    int chosen;
+    
+    /**
+     * Amount of times that the process has been blocked by the scheduler
+     */
+    int blocked;
 
     /**
      * When the process is going to start
@@ -58,7 +78,8 @@ struct Process {
     /**
      * The priority, takes values between 0 to 63, but mapped from 1 to 64
      */
-    int priority:6;
+    unsigned int priority:6;
+    
 
     /**
     * Qk value for roundrobin, on other cases is 0
