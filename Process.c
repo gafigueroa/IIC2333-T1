@@ -26,13 +26,11 @@ Process* init_process(char name[], int priority, int initial_time, int times_siz
     process -> times = times;
     process -> qk = 0;
     process -> actual_time = 0;
-
     process -> initial_time = initial_time;
-
     process -> priority = priority;
-
     process -> state = READY;
-
+    process -> response_time = -1;
+    process -> turnaround_time = -1;
     return process;
 }
 
@@ -50,6 +48,8 @@ int change_state(Process* process, int state){
             if (process -> state == RUNNING){
                 process -> actual_time++;
                 if (process -> actual_time >= process -> size_times){
+                    process_finished++;
+                    process -> turnaround_time = time - process -> initial_time;
                     printf("Process finished\n");
                     return 0;
                 }
