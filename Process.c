@@ -57,7 +57,8 @@ int change_state(Process* process, int state){
                 if (process -> actual_time >= process -> size_times){
                     process_finished++;
                     process -> turnaround_time = time - process -> initial_time;
-                    printf("FINISHED Process: %s\n", process -> name);
+                    process -> time_executed = 0;
+                    printf("FINISHED %s\n", process -> name);
                     return 0;
                 }
                 process -> blocked++;
@@ -107,7 +108,6 @@ int total_executing_time(Process* process){
         total += process -> times[i];
     }
     total += process -> time_executed;
-    printf("Total: %d\n", total);
     return total;
 }
 

@@ -40,7 +40,7 @@ void print_stats(){
       else{
         printf("   response_time: The process never started\n");
       }
-      printf("   Waiting time: %d\n", proc -> total_time_waiting);
+      printf("   Waiting time: %d\n", proc -> turnaround_time - total_executing_time(proc));
     }
     printf("--------------------------------------\n");
 }

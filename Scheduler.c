@@ -84,6 +84,9 @@ void tick_process_in_execution(Scheduler* scheduler){
         } else {
             //Get the next process
             Process* process_exec = dequeue(scheduler -> ready_queue);
+            if(process_exec -> response_time == -1){
+              process_exec -> response_time = time - process_exec -> initial_time;
+            }
             //Change the process state to running and add it as the process being executed
             change_state(process_exec, RUNNING);
             scheduler -> process_in_execution = process_exec;
@@ -135,71 +138,6 @@ void tick_round(Scheduler* scheduler){
         } else {
             //Get the next process
             Process* process_exec = dequeue(scheduler -> ready_queue);
-            //Change the process state to running and add it as the process being executed
-            change_state(process_exec, RUNNING);
-            scheduler -> process_in_execution = process_exec;
-        }
-    }
-}
-
-/*
- * @brief Manage the current process being executed in the scheduler when roundrobin
- */
-void tick_round_robin(Scheduler* scheduler){
-    //If the process needs to stay longer, keep it on the scheduler
-    if (scheduler -> process_in_execution){
-        int time_executed_process = scheduler -> process_in_execution -> time_executed;
-        int time_to_execute = get_max_time_process(scheduler, scheduler->process_in_execution);
-        if (time_executed_process < time_to_execute){
-            scheduler -> time_process++;
-            scheduler -> process_in_execution -> time_executed++;
-            printf("Process: %s is RUNNING\n", scheduler -> process_in_execution -> name);
-        }
-        else if (time_executed_process == time_to_execute){
-            if (time_executed_process < actual_max_time(scheduler->process_in_execution)){
-                if (change_state(scheduler -> process_in_execution,READY)){
-                    enqueue(scheduler->ready_queue, scheduler->process_in_execution);
-                }
-            }else{
-                //change the state of the process to waiting and add it to the waiting queue
-                if (change_state(scheduler -> process_in_execution, WAITING)){
-                    scheduler -> process_in_execution -> time_executed = 0;
-                    int pos = scheduler -> process_in_execution -> actual_time;
-                    int priority = scheduler_time + scheduler -> process_in_execution -> times[pos];
-                    printf("Process: %s is changing to WAITING with priority: %d\n", scheduler -> process_in_execution -> name, priority);
-                    enqueue_priority(scheduler -> waiting_queue, scheduler -> process_in_execution, priority);
-                }
-            }
-            scheduler -> time_process = 0;
-            scheduler -> process_in_execution = NULL;
-            printf("IDLE\n");
-
-            //If there is no element in the ready queue, then change the process to null (idle)
-            if (scheduler -> ready_queue -> size == 0){
-                scheduler -> process_in_execution = NULL;
-
-                //If we have processes that can execute, execute one
-            } else {
-                //Get the next process
-                Process* process_exec = dequeue(scheduler -> ready_queue);
-                //Change the process state to running and add it as the process being executed
-                change_state(process_exec, RUNNING);
-                scheduler -> process_in_execution = process_exec;
-            }
-        }
-    }
-    //In case that the process needs to stop
-    else {
-        printf("IDLE\n");
-        scheduler -> time_process = 0;
-        //If there is no element in the ready queue, then change the process to null (idle)
-        if (scheduler -> ready_queue -> size == 0){
-            scheduler -> process_in_execution = NULL;
-
-        //If we have processes that can execute, execute one
-        } else {
-            //Get the next process
-            Process* process_exec = dequeue(scheduler -> ready_queue);
             if(process_exec -> response_time == -1){
               process_exec -> response_time = time - process_exec -> initial_time;
             }
@@ -209,6 +147,7 @@ void tick_round_robin(Scheduler* scheduler){
         }
     }
 }
+
 
 void schedule(Scheduler* scheduler, Process* process){
     enqueue(scheduler -> ready_queue, process);
