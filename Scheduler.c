@@ -62,7 +62,13 @@ void tick_process_in_execution(Scheduler* scheduler){
     //If the process needs to stay longer, keep it on the scheduler
     if (scheduler -> time_process < max_time_process){
         scheduler -> time_process++;
-        printf("Process: %s is RUNNING\n", scheduler -> process_in_execution -> name);
+        scheduler -> process_in_execution -> time_executed++;
+        printf("%s has run %d intervals, is RUNNING interval %d, there is %d intervals left\n",
+                scheduler -> process_in_execution -> name,
+                intervals_executed(scheduler -> process_in_execution),
+                intervals_executed(scheduler -> process_in_execution) +1,
+                intervals_left(scheduler -> process_in_execution) -1
+              );
     }
     //In case that the process needs to stop
     else {
@@ -71,6 +77,7 @@ void tick_process_in_execution(Scheduler* scheduler){
             if (change_state(scheduler -> process_in_execution, WAITING)){
                 int pos = scheduler -> process_in_execution -> actual_time;
                 int priority = scheduler_time + scheduler -> process_in_execution -> times[pos];
+                scheduler -> process_in_execution -> time_executed = 0;
                 printf("Process: %s is changing to WAITING with priority: %d\n", scheduler -> process_in_execution -> name, priority);
                 enqueue_priority(scheduler -> waiting_queue, scheduler -> process_in_execution, priority);
             }
@@ -105,7 +112,12 @@ void tick_round(Scheduler* scheduler){
         if (time_executed_process < time_to_execute){
             scheduler -> time_process++;
             scheduler -> process_in_execution -> time_executed++;
-            printf("Process: %s is RUNNING\n", scheduler -> process_in_execution -> name);
+            printf("%s has run %d intervals, is RUNNING interval %d, there is %d intervals left\n",
+                    scheduler -> process_in_execution -> name,
+                    intervals_executed(scheduler -> process_in_execution),
+                    intervals_executed(scheduler -> process_in_execution) +1,
+                    intervals_left(scheduler -> process_in_execution) -1
+                  );
         } else {
             if (time_executed_process < actual_max_time(scheduler->process_in_execution)){
                 if (change_state(scheduler -> process_in_execution,READY)){
