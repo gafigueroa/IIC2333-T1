@@ -53,7 +53,7 @@ int change_state(Process* process, int state){
                 if (process -> actual_time >= process -> size_times){
                     process_finished++;
                     process -> turnaround_time = time - process -> initial_time;
-                    printf("Process finished\n");
+                    printf("FINISHED Process: %s\n", process -> name);
                     return 0;
                 }
                 process -> state = WAITING;
