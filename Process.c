@@ -89,10 +89,12 @@ int change_state(Process* process, int state){
 }
 
 int intervals_executed(Process* process){
+    if(!process) {return 0;}
     return process -> actual_time/2;
 }
 
 int intervals_left(Process* process){
+    if(!process) {return 0;}
     int val = (process -> size_times + 1)/2;
     return val - intervals_executed(process);
 }
