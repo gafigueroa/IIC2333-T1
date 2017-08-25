@@ -34,6 +34,9 @@ Process* init_process(char name[], int priority, int initial_time, int times_siz
     process -> state = READY;
     process -> response_time = -1;
     process -> turnaround_time = -1;
+    process -> blocked = 0;
+    process -> chosen = 0;
+    process -> total_time_waiting = 0;
     return process;
 }
 
@@ -45,6 +48,7 @@ int change_state(Process* process, int state){
     switch (state) {
         case RUNNING:
             process -> state = RUNNING;
+            process -> chosen++;
             return 1;
 
         case WAITING:
@@ -56,6 +60,7 @@ int change_state(Process* process, int state){
                     printf("FINISHED Process: %s\n", process -> name);
                     return 0;
                 }
+                process -> blocked++;
                 process -> state = WAITING;
             } else {
                 printf("Error on changing the state to waiting by the process:\n");

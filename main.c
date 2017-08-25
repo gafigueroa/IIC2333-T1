@@ -20,21 +20,27 @@ Queue* process_queue;
 
 void print_stats(){
     printf("\n----------------STATS---------------\n");
-    printf("Simulation time: %d\n", time);
     printf("N° of finished process: %d\n", process_finished);
+    printf("Simulation time: %d\n", time);
     printf("PROCESSES:\n");
     for(int i=0;i<array_size;i++){
       Process* proc = process_array[i];
       printf("Process name: %s\n", proc -> name);
-      //printf("   N° of times chosen: %d\n", proc -> chosen);
-      //printf("   N° of times blocked: %d\n", proc -> blocked);
+      printf("   N° of times chosen: %d\n", proc -> chosen);
+      printf("   N° of times blocked: %d\n", proc -> blocked);
       if(proc -> turnaround_time != -1){
         printf("   Turnaround time: %d\n", proc -> turnaround_time);
+      }
+      else{
+        printf("   Turnaround time: the process didn't finish\n");
       }
       if(proc -> response_time != -1){
         printf("   Response time: %d\n", proc -> response_time);
       }
-      //printf("   Waiting time: %d\n", proc -> name);
+      else{
+        printf("   response_time: The process never started\n");
+      }
+      printf("   Waiting time: %d\n", proc -> total_time_waiting);
     }
     printf("--------------------------------------\n");
 }
