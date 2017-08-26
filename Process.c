@@ -30,7 +30,7 @@ Process* init_process(char name[], int priority, int initial_time, int times_siz
     process -> total_time_waiting = 0;
 
     process -> initial_time = initial_time;
-    process -> priority = priority;
+    process -> priority = 64 - priority;
     process -> state = READY;
     process -> response_time = -1;
     process -> turnaround_time = -1;
@@ -56,9 +56,9 @@ int change_state(Process* process, int state){
                 process -> actual_time++;
                 if (process -> actual_time >= process -> size_times){
                     process_finished++;
-                    process -> turnaround_time = time - process -> initial_time;
+                    process -> turnaround_time = stime - process -> initial_time;
                     process -> time_executed = 0;
-                    printf("FINISHED %s\n", process -> name);
+                    printf("FINISHED " BLUE "%s" RESET " | ", process -> name);
                     return 0;
                 }
                 process -> blocked++;

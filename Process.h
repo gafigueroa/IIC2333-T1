@@ -17,7 +17,17 @@
 #define RUNNING 2
 #define READY 3
 
-int time;
+#define RESET   "\033[0m"
+#define BLACK   "\033[30m"      /* Black */
+#define RED     "\033[31m"      /* Red */
+#define GREEN   "\033[32m"      /* Green */
+#define YELLOW  "\033[33m"      /* Yellow */
+#define BLUE    "\033[34m"      /* Blue */
+#define MAGENTA "\033[35m"      /* Magenta */
+#define CYAN    "\033[36m"      /* Cyan */
+#define WHITE   "\033[37m"      /* White */
+
+int stime;
 int process_finished;
 
 
@@ -157,8 +167,18 @@ int change_state(Process* process, int state);
  */
 int total_executing_time(Process* process);
 
+/**
+ * @ingroup process
+ * @brief Get the amount of intervals that have been executed
+ *
+ */
 int intervals_executed(Process* process);
 
+/**
+ * @ingroup process
+ * @brief Get the amount of intervals left
+ *
+ */
 int intervals_left(Process* process);
 
 /**

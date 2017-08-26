@@ -86,6 +86,19 @@ typedef struct Queue Queue;
  */
 Queue* init_queue(int type);
 
+/**
+ * @ingroup queue
+ * @brief Initialize the queue with the type. Then push all the elements of the array
+ *
+ * @param type The type of the queue:
+ * 0: is for FCFS
+ * 1: is for ROUNDROBIN
+ * 2: is for PRIORITY
+ * @param process_array Array of processes that are going to be added to the queue
+ * @param size The size of the array of processes
+ *
+ * @return The queue that has been initialized
+ */
 Queue* init_queue_array_process(int type, Process** process_array, int size);
 
 /**

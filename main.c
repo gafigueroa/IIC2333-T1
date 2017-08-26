@@ -21,7 +21,7 @@ Queue* process_queue;
 void print_stats(){
     printf("\n----------------STATS---------------\n");
     printf("N° of finished process: %d\n", process_finished);
-    printf("Simulation time: %d\n", time);
+    printf("Simulation time: %d\n", stime);
     printf("PROCESSES:\n");
     for(int i=0;i<array_size;i++){
       Process* proc = process_array[i];
@@ -87,8 +87,8 @@ int main(int argc, const char * argv[]) {
     }
 
 
-    for (time = 0; time < 200; time++){
-        while (time == minPriority(process_queue)){
+    for (stime = 0; 1; stime++){
+        while (stime == minPriority(process_queue)){
             Process* process_to_schedule = dequeue(process_queue);
             schedule(scheduler, process_to_schedule);
         }
