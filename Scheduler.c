@@ -9,7 +9,10 @@
 #include "Scheduler.h"
 #include <stdlib.h>
 
+#define PRINT_IDLE 1
+
 int scheduler_time = 0;
+
 
 Scheduler* init_scheduler(int type){
     Scheduler* scheduler = malloc(sizeof(Scheduler));
@@ -57,18 +60,26 @@ void tick_process_in_execution(Scheduler* scheduler){
         int pos = scheduler -> process_in_execution -> actual_time;
         max_time_process = scheduler -> process_in_execution -> times[pos];
     }else{
-        printf("IDLE");
+        if (PRINT_IDLE){
+            printf("IDLE | ");
+        }
     }
     //If the process needs to stay longer, keep it on the scheduler
     if (scheduler -> time_process < max_time_process){
         scheduler -> time_process++;
         scheduler -> process_in_execution -> time_executed++;
+        if (!PRINT_IDLE){
+            printf("T:%d | ", scheduler_time);
+        }
         printf(BLUE "%s" RESET": has run %d intervals | " RED "RUNNING" RESET" interval %d | %d intervals left | ",
                scheduler -> process_in_execution -> name,
                intervals_executed(scheduler -> process_in_execution),
                intervals_executed(scheduler -> process_in_execution) +1,
                intervals_left(scheduler -> process_in_execution) -1
                );
+        if (!PRINT_IDLE){
+            printf("\n");
+        }
     }
     //In case that the process needs to stop
     else {
@@ -78,7 +89,13 @@ void tick_process_in_execution(Scheduler* scheduler){
                 int pos = scheduler -> process_in_execution -> actual_time;
                 int priority = scheduler_time + scheduler -> process_in_execution -> times[pos];
                 scheduler -> process_in_execution -> time_executed = 0;
+                if (!PRINT_IDLE){
+                    printf("T:%d | ", scheduler_time);
+                }
                 printf(BLUE "%s" RESET ": changing to " YELLOW "WAITING" RESET " | ", scheduler -> process_in_execution -> name);
+                if (!PRINT_IDLE){
+                    printf("\n");
+                }
                 enqueue_priority(scheduler -> waiting_queue, scheduler -> process_in_execution, priority);
             }
         }
@@ -97,14 +114,22 @@ void tick_process_in_execution(Scheduler* scheduler){
             //Change the process state to running and add it as the process being executed
             change_state(process_exec, RUNNING);
             scheduler -> process_in_execution = process_exec;
+            if (!PRINT_IDLE){
+                printf("T:%d | ", scheduler_time);
+            }
             printf("Scheduler | " BLUE "%s " RESET"to execute on CPU | ", scheduler -> process_in_execution -> name);
+            if (!PRINT_IDLE){
+                printf("\n");
+            }
         }
     }
 }
 
 void tick_round(Scheduler* scheduler){
     if (!scheduler->process_in_execution){
-        printf("IDLE | ");
+        if (PRINT_IDLE){
+            printf("IDLE | ");
+        }
     } else {
         //How much time the process has been executed
         int time_executed_process = scheduler -> process_in_execution -> time_executed;
@@ -113,17 +138,29 @@ void tick_round(Scheduler* scheduler){
         if (time_executed_process < time_to_execute){
             scheduler -> time_process++;
             scheduler -> process_in_execution -> time_executed++;
+            if (!PRINT_IDLE){
+                printf("T:%d | ", scheduler_time);
+            }
             printf(BLUE "%s" RESET": has run %d intervals | " RED "RUNNING" RESET" interval %d | %d intervals left | ",
                     scheduler -> process_in_execution -> name,
                     intervals_executed(scheduler -> process_in_execution),
                     intervals_executed(scheduler -> process_in_execution) +1,
                     intervals_left(scheduler -> process_in_execution) -1
                   );
+            if (!PRINT_IDLE){
+                printf("\n");
+            }
         } else {
             if (time_executed_process < actual_max_time(scheduler->process_in_execution)){
                 if (change_state(scheduler -> process_in_execution,READY)){
                     enqueue(scheduler->ready_queue, scheduler->process_in_execution);
+                    if (!PRINT_IDLE){
+                        printf("T:%d | ", scheduler_time);
+                    }
                     printf(BLUE "%s" RESET ": changing to " GREEN "READY" RESET " | ", scheduler -> process_in_execution -> name);
+                    if (!PRINT_IDLE){
+                        printf("\n");
+                    }
                 }
             }
             else{
@@ -132,7 +169,13 @@ void tick_round(Scheduler* scheduler){
                     scheduler -> process_in_execution -> time_executed = 0;
                     int pos = scheduler -> process_in_execution -> actual_time;
                     int priority = scheduler_time + scheduler -> process_in_execution -> times[pos];
+                    if (!PRINT_IDLE){
+                        printf("T:%d | ", scheduler_time);
+                    }
                     printf(BLUE "%s" RESET ": changing to " YELLOW "WAITING" RESET " | ", scheduler -> process_in_execution -> name);
+                    if (!PRINT_IDLE){
+                        printf("\n");
+                    }
                     enqueue_priority(scheduler -> waiting_queue, scheduler -> process_in_execution, priority);
                 }
             }
@@ -157,7 +200,13 @@ void tick_round(Scheduler* scheduler){
             //Change the process state to running and add it as the process being executed
             change_state(process_exec, RUNNING);
             scheduler -> process_in_execution = process_exec;
+            if (!PRINT_IDLE){
+                printf("T:%d | ", scheduler_time);
+            }
             printf("Scheduler | " BLUE "%s " RESET"to execute on CPU | ", scheduler -> process_in_execution -> name);
+            if (!PRINT_IDLE){
+                printf("\n");
+            }
         }
     }
 }
@@ -165,7 +214,13 @@ void tick_round(Scheduler* scheduler){
 
 void schedule(Scheduler* scheduler, Process* process){
     enqueue(scheduler -> ready_queue, process);
+    if (!PRINT_IDLE){
+        printf("T:%d | ", scheduler_time);
+    }
     printf(BLUE "%s" RESET ": Created\n", process -> name);
+    if (!PRINT_IDLE){
+        printf("\n");
+    }
 }
 
 /*
@@ -177,7 +232,13 @@ void tick_update_queue(Scheduler* scheduler){
     while (minPriority(scheduler->waiting_queue) == scheduler_time){
         Process* process_ready = dequeue(scheduler -> waiting_queue);
         if (change_state(process_ready, READY)){
+            if (!PRINT_IDLE){
+                printf("T:%d | ", scheduler_time);
+            }
             printf(BLUE "%s" RESET ": changing to " GREEN "READY" RESET " | ", process_ready -> name);
+            if (!PRINT_IDLE){
+                printf("\n");
+            }
             enqueue(scheduler -> ready_queue, process_ready);
         }
     }
@@ -187,7 +248,9 @@ void tick_update_queue(Scheduler* scheduler){
  * @brief Simulate one unit of time
  */
 void tick(Scheduler* scheduler){
-    printf("T:%d | ", scheduler_time);
+    if (PRINT_IDLE){
+        printf("T:%d | ", scheduler_time);
+    }
 
     //Update the queues
     tick_update_queue(scheduler);
@@ -198,7 +261,9 @@ void tick(Scheduler* scheduler){
     } else {
         tick_process_in_execution(scheduler);
     }
-    printf("\n");
+    if (PRINT_IDLE){
+        printf("\n");
+    }
     scheduler_time++;
 
 }
