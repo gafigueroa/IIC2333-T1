@@ -78,6 +78,7 @@ $(function() {
 <ul>
 <li>Cambiar de estado corresponde a un tick del scheduler</li>
 <li>Imprimimos IDLE en caso de que no haya nada ejecutandose</li>
+<li>El programa sigue ejecutandose hasta que se realiza ctrl + c, esto porque consideramos el scheduler va a seguir funcionando, pero simplemente ejecutando el proceso idle. Debido a esto, se imprimirán muchos IDLE hasta que se corte, entendemos esto puede ser molesto por lo que en el archivo <a class="el" href="_scheduler_8c_source.html">Scheduler.c</a> se encuentra definido un macro llamado <code>PRINT_IDLE</code>, el cual se encuentra seteado en 1, si se desea que no se imprima IDLE, simplemente cambiar el macro a 0.</li>
 </ul>
 <h3>Información adicional</h3>
 <ul>
